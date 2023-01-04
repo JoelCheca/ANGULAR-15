@@ -1,0 +1,288 @@
+<section class="padded">
+  <div class="container">
+    <h1><i class="bi bi-person-bounding-box"></i>RRHH Empleados</h1>
+    <div class="mb-3">
+
+      <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-bounding-box"></i></span>
+        <input type="text" class="form-control" [(ngModel)]="textoBuscar" placeholder="Búsqueda de Empleado">
+        <button type="button" class="btn btn-primary" (click)="buscar()"><i
+            class="bi bi-file-earmark-person-fill"></i>Buscar Empleado</button>
+      </div>
+
+      <button  id="btnrigh" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insertModal">
+        <i class="bi bi-person-add"></i>Agregar Empleado
+      </button>
+
+      <button  id="btnletf" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reniecModal">
+        <i class="bi bi-search"  ></i>Validar Reniec
+      </button>
+    </div>
+    <div class="col">
+      <table class="table table-warning">
+        <thead>
+          <tr>
+            <th>Nombre y Apellidos</th>
+            <th>Dni</th>
+            <th (click)="setOrder('sueldo')">Sueldo <i class="bi bi-arrow-down-up"></i></th>
+            <th>Email</th>
+            <th>Condición</th>
+            <th>Detalle</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of datos 
+            | orderBy: columnaOrden : reversa 
+            | paginate :{itemsPerPage:10,currentPage: pagina}">
+            <td>{{item.nombre}} {{item.apepat}} {{item.apemat}}</td>
+            <td>{{item.dni}}</td>
+            <td>s/{{item.sueldo| number: '.2' }}</td>
+            <td>{{item.email}}</td>
+            <td>{{item.condicion}}</td>
+            <td>
+              <i class="bi bi-info-square-fill" (click)="editarEmpleado(item)" data-bs-toggle="modal"
+                data-bs-target="#detalleModal"></i>
+            </td>
+            <td><i class="bi bi-pen-fill" (click)="editarEmpleado(item)" data-bs-toggle="modal"
+                data-bs-target="#updateModal"></i></td>
+            <td><i class="bi bi-x-octagon-fill" (click)="editarEmpleado(item)" data-bs-toggle="modal"
+                data-bs-target="#deleteModal"></i></td>
+          </tr>
+        </tbody>
+      </table>
+      <div id="center">
+        <pagination-controls (pageChange)="pagina = $event"></pagination-controls>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- Modal  INSERTAR PRODUCTO-->
+<div class="modal fade" id="insertModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">  
+        <i class="bi bi-person-circle"></i><h2 class="modal-title fs-5" id="exampleModalLabel">Agregar Empleado</h2>      
+        <button type="button" class="btn-close" id="btn-cerrar-insert" data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <form [formGroup]="empleadosInsertForm" ngNativeValidate (ngSubmit)="empleadosInsert()">
+        
+        <div class="modal-body">
+          <div class="mb-3">
+            <input type="texto" class="form-control" placeholder="Digite DNI del Empleado"
+              title="Debe poner 8 números y una letra" minlength="8" maxlength="8" id="dni" [(ngModel)]="empleado.dni"
+              name="dni" formControlName="dni">
+          </div>
+
+          <div class="mb-3">
+            <input type="text" class="form-control" placeholder="nombre" id="nombre" [(ngModel)]="empleado.nombre"
+              name="nombre" required minlength="1" formControlName="nombre">
+          </div>
+
+          <div class="mb-3">
+            <input type="text" class="form-control" placeholder="apellido paterno" id="apepat"
+              [(ngModel)]="empleado.apepat" name="apepat" required minlength="1" formControlName="apepat">
+          </div>
+          <div class="mb-3">
+            <input type="text" class="form-control" placeholder="apellido materno" id="apemat"
+              [(ngModel)]="empleado.apemat" name="apemat" required minlength="1" formControlName="apemat">
+          </div>
+          <div class="mb-3">
+            <input type="text" class="form-control" placeholder="direccion" id="direccion"
+              [(ngModel)]="empleado.direccion" name="direccion" required minlength="1" formControlName="direccion">
+          </div>
+          <div class="mb-3">
+            <input type="text" class="form-control" placeholder="condicion" id="condicion"
+              [(ngModel)]="empleado.condicion" name="direccion" required minlength="1" formControlName="condicion">
+          </div>
+
+          <div class="mb-3">
+            <input type="number" class="form-control" placeholder="sueldo" id="sueldo" [(ngModel)]="empleado.sueldo"
+              name="sueldo" required minlength="1" step="any" formControlName="sueldo">
+          </div>
+
+          <div class="mb-3">
+            <input type="email" class="form-control" placeholder="email" id="email" [(ngModel)]="empleado.email"
+              name="email" required minlength="1" formControlName="email">
+          </div>
+         
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal  EDITAR-->
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">   
+        <h2 class="modal-title fs-5" id="exampleModalLabel">Editar Empleado</h2>    
+        <button type="button" class="btn-close" id="btn-cerrar-update" data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+
+      <form *ngIf="empleadoEditar" [formGroup]="empleadosUpdateForm" ngNativeValidate
+        (ngSubmit)="empleadosUpdate(empleadosUpdateForm.value)">
+       
+        <div class="modal-body">
+          <div class="mb-3">
+            <input type="number" class="form-control" placeholder="idempleado" [(ngModel)]="empleadoEditar.idempleado"
+              readonly=readonly formControlName="idempleado">
+          </div>
+
+          <div class="mb-3">
+            <input type="text" class="form-control" placeholder="dni" [(ngModel)]="empleadoEditar.dni" readonly=readonly
+              formControlName="dni">
+          </div>
+
+          <div class="mb-3">
+            <input type="text" class="form-control" placeholder="nombre" [(ngModel)]="empleadoEditar.nombre"
+              readonly=readonly formControlName="nombre">
+          </div>
+
+          <div class="mb-3">
+            <input type="text" class="form-control" placeholder="apellido paterno" [(ngModel)]="empleadoEditar.apepat"
+              readonly=readonly formControlName="apepat">
+          </div>
+          <div class="mb-3">
+            <input type="text" class="form-control" placeholder="apemat" [(ngModel)]="empleadoEditar.apemat"
+              readonly=readonly formControlName="apemat">
+          </div>
+          <div class="mb-3">
+            <input type="text" class="form-control" placeholder="direccion" [(ngModel)]="empleadoEditar.direccion"
+              required minlength="5" formControlName="direccion">
+          </div>
+          <div class="mb-3">
+            <input type="text" class="form-control" placeholder="condicion" [(ngModel)]="empleadoEditar.condicion"
+              required minlength="5" formControlName="condicion">
+          </div>
+          <div class="mb-3">
+            <input type="email" class="form-control" placeholder="email" [(ngModel)]="empleadoEditar.email" required
+              minlength="5" formControlName="email">
+          </div>
+          <div class="mb-3">
+            <input type="number" class="form-control" placeholder="sueldo" [(ngModel)]="empleadoEditar.sueldo" required
+              minlength="2" step="any" formControlName="sueldo">
+          </div>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal Eliminar-->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title fs-5" id="exampleModalLabel"><i class="bi bi-exclamation-diamond-fill"></i> Advertencia
+        </h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form *ngIf="empleadoEditar" (ngSubmit)="empleadosEliminar(empleadoEditar)">
+        <div class="modal-body">
+          
+          <h2> ¿Estas seguro que desea eliminar al empleado {{empleadoEditar.nombre}}?</h2>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Cerrar</button>
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Eliminar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal  DETALLES-->
+<div class="modal fade" id="detalleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" *ngIf="empleadoEditar">
+      <div class="modal-header">
+        <h4>Empleado : {{empleadoEditar.nombre}} {{empleadoEditar.apepat}}{{empleadoEditar.apemat}}</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form [formGroup]="empleadosUpdateForm" (ngSubmit)="empleadosUpdate(empleadosUpdateForm.value)">
+        <div class="modal-body">
+          <h6 class="modal-title fs-5" id="exampleModalLabel">Id : {{empleadoEditar.idempleado}}</h6>
+          <h6 class="modal-title fs-5" id="exampleModalLabel">Nombre : {{empleadoEditar.nombre}}
+            {{empleadoEditar.apepat}} {{empleadoEditar.apemat}}</h6>
+          <h6 class="modal-title fs-5" id="exampleModalLabel">Dni : {{empleadoEditar.dni}}</h6>
+          <h6 class="modal-title fs-5" id="exampleModalLabel">Email : {{empleadoEditar.email}}</h6>
+          <h6 class="modal-title fs-5" id="exampleModalLabel">Dirección : {{empleadoEditar.direccion}}</h6>
+          <h6 class="modal-title fs-5" id="exampleModalLabel">Condición : {{empleadoEditar.condicion}}</h6>
+          <h6 class="modal-title fs-5" id="exampleModalLabel">Sueldo : {{empleadoEditar.sueldo| number: '.2'}}</h6>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal  RENIEC-->
+<div class="modal fade" id="reniecModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <i class="bi bi-person-circle"></i> <h2 class="modal-title fs-5" id="exampleModalLabel">Validar Reniec</h2>
+        <button type="button" class="btn-close" id="btn-cerrar-insert" data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+
+      <form  [formGroup]="empleadosReniecForm" ngNativeValidate>
+        <div class="modal-body">  
+          
+      <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-bounding-box"></i></span>
+        <input type="text" class="form-control" id="dni" name="dni" #dni placeholder="Búsqueda Reniec"
+        title="Debe poner 8 números y una letra"  required minlength="8" maxlength="8">
+        <button type="button" class="btn btn-primary" (click)="buscarDni(dni.value)">Buscar Reniec</button>
+      </div>
+
+      <div class="mb-3">
+        <h6 >Nombres:</h6>
+        <input *ngFor="let item of dniBuscar " class="form-control" value="{{item.nombres}}"  
+        >
+      </div>
+      <div class="mb-3">
+        <h6 >Apellidos:</h6>
+        <input *ngFor="let item of dniBuscar " class="form-control"
+          value="{{item.apellidoPaterno}} {{item.apellidoMaterno}}">
+      </div>
+      <div class="mb-3">
+        <h6>DNI:</h6>
+        <input *ngFor="let item of dniBuscar " class="form-control" value="{{item.numeroDocumento}} ">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>      
+    </div>
+    
+    
+  </form>
+
+    </div>
+  </div>
+</div>

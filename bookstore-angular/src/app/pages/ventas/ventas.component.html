@@ -1,0 +1,161 @@
+<section class="padded">
+    <div class="container">
+      <h1><i class="bi bi-shop"></i> Ventas</h1>
+      <div class="mb-3">
+  
+     <!--  <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1"><i class="bi bi-bookmark-plus-fill">            
+          </i></span><input type="text" class="form-control" [(ngModel)]="textoBuscar" placeholder="Búsqueda de Publicaciones">
+          <button type="button" class="btn btn-primary" (click)="buscar()"><i class="bi bi-search"></i>Buscar Publicaciones</button>
+        </div> --> 
+
+
+      <!--  <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1"><i class="bi bi-journal-medical"></i></span>
+          <input type="text" class="form-control" id="idtipo" name="idtipo" #idtipo 
+          placeholder="Buscar por Tipo de Publicaciones" >
+
+          <select class="form-control" id="idtipo" name="idtipo" #idtipo >
+            <option  >Seleccionar</option>
+            
+            <option  *ngFor="let item of listaTipos">{{item.descripcion}}</option>
+           
+          </select>
+          <button type="button" class="btn btn-primary" (click)="buscarTipo(idtipo.value)"><i class="bi bi-search"></i>Buscar Tipo</button>
+        </div>-->
+
+        <button  id="btnrigh" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insertModal">
+          <i class="bi bi-journal-plus"></i>Registrar Nueva Venta
+        </button>
+  
+      </div>
+      <div class="col">
+        <table class="table table-warning">
+          <thead>
+            <tr>
+              <th>idventa</th>
+              <th>cliente</th>             
+              <th>fecha</th>
+              <th>idempleado</th>
+              <th>idpublicacion </th>
+              <th>cantidad</th>
+              <th (click)="setOrder('precio')">Precio <i class="bi bi-arrow-down-up"></i></th>
+              <th>dcto</th>
+              <th>subtotal</th>
+              <th>impuesto</th>
+              <th>total</th>  
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of datos
+              | orderBy: columnaOrden : reversa
+             | paginate :{itemsPerPage:10,currentPage: pagina}">
+              <td>{{item.idventa}}</td>
+              <td>{{item.cliente}}</td>
+              <td>{{item.fecha}}</td>
+              <td>{{item.idempleado}}</td>             
+              <td>{{item.idpublicacion}}</td>
+              <td>{{item.cantidad}}</td>
+              <td>s/{{item.precio | number: '.2' }}</td>
+              <td>s/{{item.dcto | number: '.2' }}</td>
+              <td>s/{{item.subtotal | number: '.2' }}</td>
+              <td>s/{{item.impuesto | number: '.2' }}</td>
+              <td>s/{{item.total | number: '.2' }}</td>           
+             <!-- <td><i class="bi bi-pen-fill" (click)="editarPublicacion(item)" data-bs-toggle="modal"
+                  data-bs-target="#updateModal"></i></td>
+               <td><i class="bi bi-x-octagon-fill" (click)="editarPublicacion(item)" data-bs-toggle="modal"
+                  data-bs-target="#deleteModal"></i></td>-->
+            </tr>
+          </tbody>
+        </table>
+        <div id="center">
+         <pagination-controls (pageChange)="pagina = $event"></pagination-controls>
+        </div>
+  
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Modal  INSERTAR VENTA-->
+<div class="modal fade" id="insertModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">  
+          <i class="bi bi-bookmark-plus-fill"></i><h2 class="modal-title fs-5" id="exampleModalLabel">Registrar Nueva Venta</h2>      
+          <button type="button" class="btn-close" id="btn-cerrar-insert" data-bs-dismiss="modal"
+            aria-label="Close"></button>
+        </div>
+        <form [formGroup]="ventasInsertForm" ngNativeValidate (ngSubmit)="ventasInsert()">
+          
+          <div class="modal-body">
+            <div class="mb-3">
+              <input type="number" class="form-control" placeholder="idventa"
+                title="Debe ingresar el codigo de venta" minlength="1"  id="idventa" [(ngModel)]="venta.idventa"
+                name="idventa" formControlName="idventa">
+            </div>
+  
+            <div class="mb-3">
+              <input type="text" class="form-control" placeholder="cliente" id="cliente" [(ngModel)]="venta.cliente"
+                name="cliente" required minlength="1" formControlName="cliente">
+            </div>
+  
+            <div class="mb-3">
+              <input type="number" class="form-control" placeholder="idempleado" id="idempleado"
+                [(ngModel)]="venta.idempleado" name="idempleado" required minlength="1" formControlName="idempleado">
+            </div>
+
+            <div class="mb-3">
+            <select class="form-control" [(ngModel)]="venta.idpublicacion" name="idpublicacion" formControlName="idpublicacion">
+                <option  *ngFor="let item of listaPublicaciones">{{item.idpublicacion}} </option>
+              </select>
+            </div>
+  
+            <div class="mb-3">
+              <input type="number" class="form-control" placeholder="cantidad" id="cantidad"
+                [(ngModel)]="venta.cantidad" name="cantidad" required minlength="1" formControlName="cantidad">
+            </div>
+           
+            <div class="mb-3">
+              <input type="number" class="form-control" placeholder="precio" id="precio"
+                [(ngModel)]="venta.precio" name="precio" required minlength="1" formControlName="precio">
+            </div>
+
+
+            <div class="mb-3">
+                <input type="number" class="form-control" placeholder="dcto" id="dcto"
+                  [(ngModel)]="venta.dcto" name="dcto" required minlength="1" formControlName="dcto">
+              </div>
+
+              <div class="mb-3">
+                <input type="number" class="form-control" placeholder="subtotal" id="subtotal"
+                  [(ngModel)]="venta.subtotal" name="subtotal" required minlength="1" formControlName="subtotal">
+              </div>
+
+              <div class="mb-3">
+                <input type="number" class="form-control" placeholder="impuesto" id="impuesto"
+                  [(ngModel)]="venta.impuesto" name="impuesto" required minlength="1" formControlName="impuesto">
+              </div>
+              <div class="mb-3">
+                <input type="number" class="form-control" placeholder="total" id="total"
+                  [(ngModel)]="venta.total" name="total" required minlength="1" formControlName="total">
+              </div>
+             <!--   <tr>
+                <th colspan="4" class="text-end"> Total</th>
+                <th class="text-end">{{total | number: '.2'}}</th>
+              </tr>-->
+          </div>
+
+         <!--  <button  type="button">
+            <i class="bi bi-journal-plus" (click)="calcularTotal"></i>Calcular
+          </button> -->
+
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,19 @@
+.card{
+    height: 100%!important; 
+    text-align: center;
+    transition: all ease-in-out .5s;
+}
+
+.card-img-top{
+    padding: 30px;
+}
+
+.card:hover{
+    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+}
+
+.btnCarrito{
+    cursor: pointer;
+    margin-left: 5px;
+}
+

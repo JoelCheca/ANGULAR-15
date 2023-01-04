@@ -1,0 +1,182 @@
+<section class="padded">
+    <div class="container">
+        <h1><i class="bi bi-currency-bitcoin"></i>Cuentas</h1>
+        <div class="col">
+            <table class="table ">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Numero </th>
+                        <th (click)="setOrder('Saldo')">Saldo<i class="bi bi-arrows-angle-contract"></i> </th> 
+                        <th>Creada </th>
+                        <th>IdCliente</th>
+                        <th>Depósito</th>
+                        <th>Retiro</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of listaCuentas
+                    | orderBy: columnaOrden : reversa ">
+                        <td>{{item.ID}}</td>
+                        <td>{{item.NUMERO}}</td>
+                        <td>s/{{item.SALDO| number: '.2' }}</td>
+                        <td>{{item.CREADA}}</td>
+                        <td>{{item.IDCLIENTE}}</td>
+                        <td><i class="bi bi-piggy-bank" (click)="depositarCuenta(item)" data-bs-toggle="modal"
+                                data-bs-target="#depositarModal"></i></td>
+                        <td><i class="bi bi-cash-coin" (click)="depositarCuenta(item)" data-bs-toggle="modal"
+                                data-bs-target="#retirarModal"></i></td>
+
+                    </tr>
+                </tbody>
+            </table>           
+        </div>
+        <div class="col-12" id="cbtn">
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#transferirModal">
+                <i class="bi bi-currency-exchange"></i>Transferir dinero
+            </button>
+        </div>        
+    </div>
+    
+</section>
+
+<!-- Modal  TRANSFERIR MODEL-->
+<div class="modal fade" id="transferirModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title fs-5" id="exampleModalLabel">Transferir entre Cuentas</h2>
+                <button type="button" class="btn-close" id="btn-cerrar-insert" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+
+
+            <form [formGroup]="transferirInsertForm" ngNativeValidate (ngSubmit)="operacionesTransferir()">
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        <input type="date" class="form-control" placeholder="Digite la fecha" id="Fecha"
+                        value="2013-12-13"
+                            [(ngModel)]="operacion.Fecha" name="Fecha" required minlength="2" formControlName="Fecha">
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="number" class="form-control" placeholder="Digite el Monto ha depositar" id="Monto"
+                            [(ngModel)]="operacion.Monto" name="Monto" required minlength="2" formControlName="Monto">
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="number" class="form-control" placeholder="Digite Cuenta Origen" id="IdCuentaOri"
+                            [(ngModel)]="operacion.IdCuentaOri" name="IdCuentaOri" formControlName="IdCuentaOri">
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="number" class="form-control" placeholder="Digite Cuenta Destino" id="IdCuentaDst"
+                            [(ngModel)]="operacion.IdCuentaDst" name="IdCuentaDst" formControlName="IdCuentaDst">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mensajeModal">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal  DEPOSITAR-->
+<div class="modal fade" id="depositarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title fs-5" id="exampleModalLabel">Depositar a una cuenta </h2>
+                <button type="button" class="btn-close" id="btn-cerrar-update" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <form *ngIf="cuentasDepositar" [formGroup]="cuentasUpdateForm"
+                (ngSubmit)="cuentasUpdateDepositar(cuentasUpdateForm.value)">
+
+                <div class="mb-3">
+                    <input type="date" class="form-control" placeholder="Digite la fecha" id="Fecha"
+                        [(ngModel)]="operacion.Fecha" name="Fecha" required minlength="2" formControlName="Fecha">
+                </div>
+
+                <div class="mb-3">
+                    <input type="number" class="form-control" placeholder="Digite el Monto ha depositar" id="Monto"
+                        [(ngModel)]="operacion.Monto" name="Monto" required minlength="2" formControlName="Monto">
+                </div>
+
+                <div class="mb-3">
+                    <input type="number" class="form-control" placeholder="Digite la Cuenta de Destino" id="IdCuentaDst"
+                        [(ngModel)]="operacion.IdCuentaDst" name="IdCuentaDst" formControlName="IdCuentaDst">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button data-bs-toggle="modal" class="btn btn-primary" data-bs-target="#mensajeModal">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal  RETIRAR-->
+<div class="modal fade" id="retirarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title fs-5" id="exampleModalLabel">Retirar a una cuenta </h2>
+                <button type="button" class="btn-close" id="btn-cerrar-retirar" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <form *ngIf="cuentasDepositar" [formGroup]="cuentasUpdateForm"
+                (ngSubmit)="cuentasUpdateRetirar(cuentasUpdateForm.value)">
+
+                <div class="mb-3">
+                    <input type="date" class="form-control" placeholder="Digite la fecha" id="Fecha"
+                        [(ngModel)]="operacion.Fecha" name="Fecha" required minlength="2" formControlName="Fecha">
+                </div>
+
+                <div class="mb-3">
+                    <input type="number" class="form-control" placeholder="Digite el Monto ha Retirar" id="Monto"
+                        [(ngModel)]="operacion.Monto" name="Monto" required minlength="2" formControlName="Monto">
+                </div>
+
+                <div class="mb-3">
+                    <input type="number" class="form-control" placeholder="Digite Cuenta de Origen" id="IdCuentaDst"
+                        [(ngModel)]="operacion.IdCuentaDst" name="IdCuentaDst" formControlName="IdCuentaDst">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button data-bs-toggle="modal" class="btn btn-primary" data-bs-target="#mensajeModal">Guardar</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+    <!-- Modal Mensaje-->
+    <div class="modal fade" id="mensajeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h2 class="modal-title fs-5" id="exampleModalLabel"><i class="bi bi-exclamation-diamond-fill"></i>   Advertencia</h2>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form >
+            <div class="modal-body" >
+                <h2>{{mensaje}}</h2>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Cerrar</button>            
+            </div>
+          </form>
+          </div>
+        </div>
+      </div>

@@ -1,0 +1,67 @@
+<section class="padded">
+    <div class="container">
+        <h1><i class="bi bi-shop"></i> Consultar Ventas por Fecha</h1>
+        <div class="mb-3">
+
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Desde</span>
+                <input type="date" class="form-control" [(ngModel)]="textoBuscar">
+                <span class="input-group-text" id="basic-addon1">Hasta</span>
+            <input type="date" class="form-control" [(ngModel)]="textoBuscar2">
+
+            <button type="button" class="btn btn-primary" (click)="buscar()"><i class="bi bi-search"></i>Buscar
+               Ventas</button>
+               
+              
+            </div>
+            
+
+
+
+        </div>
+        <div class="col">
+            <table class="table table-warning">
+                <thead>
+                    <tr>
+                        <th>idventa</th>
+                        <th>cliente</th>
+                        <th>fecha</th>
+                        <th>idempleado</th>
+                        <th>idpublicacion </th>
+                        <th>cantidad</th>
+                        <th (click)="setOrder('precio')">Precio <i class="bi bi-arrow-down-up"></i></th>
+                        <th>dcto</th>
+                        <th>subtotal</th>
+                        <th>impuesto</th>
+                        <th>total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of datos
+                          | orderBy: columnaOrden : reversa
+                          | paginate :{itemsPerPage:10,currentPage: pagina}">
+                        <td>{{item.idventa}}</td>
+                        <td>{{item.cliente}}</td>
+                        <td>{{item.fecha}}</td>
+                        <td>{{item.idempleado}}</td>
+                        <td>{{item.idpublicacion}}</td>
+                        <td>{{item.cantidad}}</td>
+                        <td>s/{{item.precio | number: '.2' }}</td>
+                        <td>s/{{item.dcto | number: '.2' }}</td>
+                        <td>s/{{item.subtotal | number: '.2' }}</td>
+                        <td>s/{{item.impuesto | number: '.2' }}</td>
+                        <td>s/{{item.total | number: '.2' }}</td>
+                        <!-- <td><i class="bi bi-pen-fill" (click)="editarPublicacion(item)" data-bs-toggle="modal"
+                  data-bs-target="#updateModal"></i></td>
+               <td><i class="bi bi-x-octagon-fill" (click)="editarPublicacion(item)" data-bs-toggle="modal"
+                  data-bs-target="#deleteModal"></i></td>-->
+                    </tr>
+                </tbody>
+            </table>
+            <div id="center">
+                <pagination-controls (pageChange)="pagina = $event"></pagination-controls>
+            </div>
+
+        </div>
+    </div>
+</section>

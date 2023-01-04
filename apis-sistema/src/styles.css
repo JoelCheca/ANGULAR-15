@@ -1,0 +1,147 @@
+body{
+    font-family: 'Jost', sans-serif;
+}
+:root{
+    --color1:#ED1A1A;
+    --color2:#FFFFFF;
+    --color3:#000000;
+    --color4:#EFB810;
+    --color5:#120A8F;
+    
+
+}
+h1{
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    
+}
+
+h2{
+    font-size: 36px;
+    font-weight: 200px;
+    letter-spacing: -1px;
+}
+
+h3{
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+h6{
+    font-weight:700px;
+}
+
+
+#main-header h1,#main-header p{
+    margin-bottom: 0;
+}
+
+#main-header{
+    background-color: var(--color1);
+    color: var(--color2);
+}
+
+#nosotros{
+    background-color: var(--color2);
+    color: var(--color3);
+}
+
+#main-footer{
+    background-color: var(--color1);
+    color: var(--color2);
+    padding: 45px 0;
+}
+
+.padded{
+    padding-top: 90px;
+    padding-bottom: 90px ;
+
+}
+
+
+
+#main-footer{
+    background-color: #011D3E;
+    text-align: center;
+}
+
+i{
+    font-size: 1.2rem;
+    margin: 20px;
+    font-size: 1.5rem;
+    margin: 10px;
+}
+
+
+form{
+    font-size: 10px;
+}
+
+.btn-primary {
+    color: #000000;
+    background-color: #18ED7C;
+    border-color:#18ED7C;
+    --bs-btn-hover-bg: #ED1A1A;
+    --bs-btn-hover-border-color: #ED1A1A;
+    --bs-btn-active-bg: #233B0E;
+    --bs-btn-active-border-color: #233B0E;
+}
+
+
+
+
+#center{ 
+    text-align: center;
+    padding: 15px;
+    
+}
+
+
+ #center button{ 
+    text-align: center;
+    padding: 15px;
+    padding: 10px 100px;
+}
+
+    
+i:hover{
+    cursor:pointer;
+}
+
+
+pagination-controls{
+    margin: 50px;
+}
+
+.spinner {
+    width: 200px;
+    height: 40px;
+    background-color: #79EF12;
+  
+    margin: 100px auto;
+    -webkit-animation: sk-rotateplane 1.2s infinite ease-in-out;
+    animation: sk-rotateplane 1.2s infinite ease-in-out;
+  }
+  
+  @-webkit-keyframes sk-rotateplane {
+    0% { -webkit-transform: perspective(120px) }
+    50% { -webkit-transform: perspective(120px) rotateY(180deg) }
+    100% { -webkit-transform: perspective(120px) rotateY(180deg)  rotateX(180deg) }
+  }
+  
+  @keyframes sk-rotateplane {
+    0% { 
+      transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+      -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg) 
+    } 50% { 
+      transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+      -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg) 
+    } 100% { 
+      transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+      -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+    }
+  }
+  
+     

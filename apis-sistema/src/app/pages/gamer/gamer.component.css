@@ -1,0 +1,60 @@
+.color {
+    background-color: #19264F;
+    ;
+}
+
+.card {
+    height: 100% !important;
+    text-align: center;
+}
+
+i:hover {
+    cursor: pointer;
+}
+
+i {
+    font-size: 1.5rem;
+    margin: 10px;
+}
+
+.zoom:hover {
+    transform: scale(1.2);
+    transition: transform .2s;
+    cursor: pointer;
+    z-index: 1500;
+}
+
+pagination-controls {
+    margin: 50px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: aliceblue;
+}
+
+.imagen-empresa-leyenda
+{
+    position: absolute;/*este metodo es que la imagen termine flotante sobre el texto*/
+    background-color: rgba(0, 0, 0,0.5);
+    color: white;
+    width: calc(100% - 30px);
+    height: 60%;
+    top: 0;
+    padding: 5px;
+    box-sizing: border-box;/*para que paddin incremente el ancho */
+    opacity: 0;/* la caja y el contenido sera tranparente*/
+    transition: all .5s ease-in-out;/* para que la transicion sea con tiempo*/
+}
+
+.imagen-empresa-leyenda:hover
+{
+    opacity: 1;
+}
+
+.alineacion-vertical{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

@@ -1,0 +1,54 @@
+<section class="padded">
+    <div class="container">
+      <h1><i class="bi bi-journal-bookmark"></i>Publicaciones</h1>
+      <div class="mb-3">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1"><i class="bi bi-journal-medical"></i></span>
+          <select class="form-control" id="idtipo" name="idtipo" #idtipo >
+            <option  >Seleccionar</option>            
+            <option  *ngFor="let item of listaTipos">{{item.descripcion}}</option>           
+          </select>
+          <button type="button" class="btn btn-primary" (click)="buscarTipo(idtipo.value)"><i class="bi bi-search"></i>Buscar Tipo</button>
+        </div>
+  
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1"><i class="bi bi-bookmark-plus-fill">            
+          </i></span><input type="text" class="form-control" [(ngModel)]="textoBuscar" placeholder="Búsqueda de Publicaciones">
+          <button type="button" class="btn btn-primary" (click)="buscar()"><i class="bi bi-search"></i>Buscar Publicaciones</button>
+        </div>    
+  
+      </div>
+      <div class="col">
+        <table class="table table-Secondary">
+          <thead>
+            <tr>
+              <th>Idpublicacion</th>
+              <th>Titulo</th>
+              <th (click)="setOrder('precio')">Precio <i class="bi bi-arrow-down-up"></i></th>
+              <th>Autor</th>
+              <th>Nro edicion</th>
+              <th>Id tipo</th>
+              <th>Stock</th>     
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of datos
+              | orderBy: columnaOrden : reversa
+             | paginate :{itemsPerPage:10,currentPage: pagina}">
+              <td>{{item.idpublicacion}}</td>
+              <td>{{item.titulo}}</td>
+              <td>s/{{item.precio| number: '.2' }}</td>
+              <td>{{item.autor}}</td>
+              <td>{{item.nroedicion}}</td>             
+              <td>{{item.idtipo}}</td>
+              <td>{{item.stock}}</td>   
+            </tr>
+          </tbody>
+        </table>
+        <div id="center">
+         <pagination-controls (pageChange)="pagina = $event"></pagination-controls>
+        </div>
+  
+      </div>
+    </div>
+  </section>

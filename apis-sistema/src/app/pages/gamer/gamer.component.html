@@ -1,0 +1,57 @@
+<section>
+  <div class="color">
+    <div class="container">
+      <br>
+      <h1><i class="bi bi-playstation"></i> GAMER</h1>
+      <!-- Barra de busqueda -->
+      <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1"><i class="bi bi-playstation"></i></span>
+        <input type="text" class="form-control" [(ngModel)]="textoBuscar" placeholder="Búsqueda gamer">
+        <button type="button" class="btn btn-primary" (click)="buscar()">Buscar Juego</button>
+      </div>
+
+      <!-- Inicio cuadro imagenes -->
+      <div class="row row-cols-1 row-cols-xl-4 row-cols-lg-3 row-cols-md-2 g-4">
+        <div *ngFor="let item of datos
+      | orderBy: columnaOrden : reversa 
+      | paginate :{itemsPerPage:12,currentPage: pagina}">
+          <br>
+
+          <div class="card zoom">
+            <img src="{{item.thumbnail}}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">{{item.title}} </h5>
+
+              <figcaption class="imagen-empresa-leyenda alineacion-vertical">                                      
+                <p>Genero: {{item.genre}}</p>
+                <p>Plataforma: {{item.platform}}</p>
+                <p>Publicacion: {{item.publisher}}</p>
+                <p>Desarrollado: {{item.developer}}</p>
+              </figcaption>
+
+              <p class="card-text">{{item.release_date}}</p>
+
+              <p>
+                <i class="bi bi-cloud-download " (click)="agregarDescargas(item)"></i>
+                <a href={{item.game_url}} target="_blank"><i class="bi bi-playstation"></i></a>
+              </p>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      
+      <br>
+      <br>
+    </div>
+  </div>
+  <br>
+  <br>
+
+  <!--Paginacion-->
+  <div id="center">
+    <pagination-controls (pageChange)="pagina = $event"></pagination-controls>
+  </div>
+</section>

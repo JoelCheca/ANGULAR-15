@@ -1,0 +1,26 @@
+h1{
+    text-align: center;
+    margin-bottom: 50px;
+    margin-top: -50px;
+}
+
+
+
+pagination-controls{
+  margin: 50px;
+  
+ 
+}
+
+#btnletf{
+ margin-left: 100px;
+}
+
+
+#btnrigh{
+  margin-left: 890px;
+}
+
+th{
+  background-color: #A0D127;
+}

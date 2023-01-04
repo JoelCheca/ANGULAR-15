@@ -1,0 +1,214 @@
+<section class="padded">
+    <div class="container">
+      <h1><i class="bi bi-journal-bookmark"></i>Publicaciones</h1>
+      <div class="mb-3">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1"><i class="bi bi-journal-medical"></i></span>
+             <select class="form-control" id="idtipo" name="idtipo" #idtipo >
+            <option  >Seleccionar</option>            
+            <option  *ngFor="let item of listaTipos">{{item.descripcion}}</option>           
+          </select>
+          <button type="button" class="btn btn-primary" (click)="buscarTipo(idtipo.value)"><i class="bi bi-search"></i>Buscar Tipo</button>
+        </div>
+  
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1"><i class="bi bi-bookmark-plus-fill">            
+          </i></span><input type="text" class="form-control" [(ngModel)]="textoBuscar" placeholder="Búsqueda de Publicaciones">
+          <button type="button" class="btn btn-primary" (click)="buscar()"><i class="bi bi-search"></i>Buscar Publicaciones</button>
+        </div> 
+
+        <button  id="btnrigh" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insertModal">
+          <i class="bi bi-journal-plus"></i>Agregar Publicaciones
+        </button>
+  
+      </div>
+      <div class="col">
+        <table class="table table-Secondary">
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Título</th>
+              <th (click)="setOrder('precio')">Precio <i class="bi bi-arrow-down-up"></i></th>
+              <th>Autor</th>
+              <th>Edición</th>
+              <th>Tipo</th>
+              <th>Stock</th>
+              <th>Editar</th>
+              <th>Eliminar</th>
+           </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of datos
+              | orderBy: columnaOrden : reversa
+             | paginate :{itemsPerPage:5,currentPage: pagina}">
+              <td>{{item.idpublicacion}}</td>
+              <td>{{item.titulo}}</td>
+              <td>s/{{item.precio| number: '.2' }}</td>
+              <td>{{item.autor}}</td>
+              <td>{{item.nroedicion}}</td>             
+              <td>{{item.idtipo}}</td>
+              <td>{{item.stock}}</td> 
+              <td><i class="bi bi-pen-fill" (click)="editarPublicacion(item)" data-bs-toggle="modal"
+                  data-bs-target="#updateModal"></i></td>
+               <td><i class="bi bi-x-octagon-fill" (click)="editarPublicacion(item)" data-bs-toggle="modal"
+                  data-bs-target="#deleteModal"></i></td>
+            </tr>
+          </tbody>
+        </table>
+        <div id="center">
+         <pagination-controls (pageChange)="pagina = $event"></pagination-controls>
+        </div>
+  
+      </div>
+    </div>
+  </section>
+  
+
+  <!-- Modal  INSERTAR PUBLICACIONES-->
+<div class="modal fade" id="insertModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">  
+        <i class="bi bi-bookmark-plus-fill"></i><h2 class="modal-title fs-5" id="exampleModalLabel">Agregar Publicaciones</h2>      
+        <button type="button" class="btn-close" id="btn-cerrar-insert" data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <form [formGroup]="publicacionesInsertForm" ngNativeValidate (ngSubmit)="publicacionesInsert()">
+        
+        <div class="modal-body">
+          <div class="mb-3">
+            <h6>Código:</h6> 
+            <input type="texto" class="form-control" placeholder="Código publicacion"
+              title="Debe poner 8 números y una letra" minlength="8" maxlength="8" id="idpublicacion" [(ngModel)]="publicacion.idpublicacion"
+              name="idpublicacion" formControlName="idpublicacion">
+          </div>
+
+          <div class="mb-3">
+            <h6>Título:</h6>          
+            <input type="text" class="form-control" placeholder="Título" id="titulo" [(ngModel)]="publicacion.titulo"
+              name="titulo" required minlength="1" formControlName="titulo">
+          </div>
+
+          <div class="mb-3">
+            <h6>Tipo:</h6>           
+          <select   [(ngModel)]="publicacion.idtipo"   formControlName="idtipo"  class="form-control" id="idtipo" name="idtipo" #idtipo >
+            <option  >Seleccione Tipo</option>            
+            <option  *ngFor="let item of listaTipos">{{item.idtipo}}</option>           
+          </select> 
+        </div>
+
+          <div class="mb-3">
+            <h6>Autor:</h6>            
+            <input type="text" class="form-control" placeholder="Autor" id="autor"
+              [(ngModel)]="publicacion.autor" name="autor" required minlength="1" formControlName="autor">
+          </div>
+
+          <div class="mb-3">
+            <h6>Edición:</h6>            
+            <input type="number" class="form-control" placeholder="Edición" id="nroedicion"
+              [(ngModel)]="publicacion.nroedicion" name="nroedicion" required minlength="1" formControlName="nroedicion">
+          </div>
+         
+          <div class="mb-3">
+            <h6>Precio:</h6>
+            <input type="number" class="form-control" placeholder="Precio" id="precio"
+              [(ngModel)]="publicacion.precio" name="precio" required minlength="1" formControlName="precio">
+          </div>
+
+          <div class="mb-3">            
+            <h6>Stock:</h6>
+            <input type="number" class="form-control" placeholder="Stock" id="stock" [(ngModel)]="publicacion.stock"
+              name="stock" required minlength="1" step="any" formControlName="stock">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal  EDITAR-->
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">   
+        <h2 class="modal-title fs-5" id="exampleModalLabel">Editar Publicaciones</h2>    
+        <button type="button" class="btn-close" id="btn-cerrar-update" data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+
+      <form *ngIf="publicacionEditar" [formGroup]="publicacionesUpdateForm" ngNativeValidate
+        (ngSubmit)="publicacionUpdate(publicacionesUpdateForm.value)">
+       
+        <div class="modal-body">
+          <div class="mb-3">
+            <h6>Código:</h6>
+            <input type="text" class="form-control" placeholder="idpublicacion" [(ngModel)]="publicacionEditar.idpublicacion"
+              readonly=readonly formControlName="idpublicacion">
+          </div>
+
+          <div class="mb-3">
+            <h6>Título:</h6>
+            <input type="text" class="form-control" placeholder="titulo" [(ngModel)]="publicacionEditar.titulo" 
+              formControlName="titulo">
+          </div>
+
+          <div class="mb-3">
+            <h6>Tipo:</h6>
+            <input type="text" class="form-control" placeholder="idtipo" [(ngModel)]="publicacionEditar.idtipo"
+            readonly=readonly formControlName="idtipo">
+          </div>
+
+          <div class="mb-3">
+            <h6>Autor:</h6>
+            <input type="text" class="form-control" placeholder="Autor" [(ngModel)]="publicacionEditar.autor"
+              formControlName="autor">
+          </div>
+          <div class="mb-3">
+            <h6>Edición:</h6>
+            <input type="text" class="form-control" placeholder="Edición" [(ngModel)]="publicacionEditar.nroedicion"
+              formControlName="nroedicion">
+          </div>
+          <div class="mb-3">
+            <h6>Precio:</h6>
+            <input type="text" class="form-control" placeholder="precio" [(ngModel)]="publicacionEditar.precio"
+              required minlength="5" formControlName="precio">
+          </div>
+          <div class="mb-3">
+            <h6>Stock:</h6>
+            <input type="text" class="form-control" placeholder="stock" [(ngModel)]="publicacionEditar.stock"
+              required minlength="5" formControlName="stock">
+          </div>   
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title fs-5" id="exampleModalLabel"><i class="bi bi-exclamation-diamond-fill"></i> Advertencia
+        </h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form *ngIf="publicacionEditar" (ngSubmit)="publicacionEliminar(publicacionEditar)">
+        <div class="modal-body">
+          
+          <h2> ¿Estas seguro que desea eliminar la publicacion {{publicacionEditar.titulo}}?</h2>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Cerrar</button>
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Eliminar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

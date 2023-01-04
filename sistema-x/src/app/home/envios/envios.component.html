@@ -1,0 +1,28 @@
+<section id="envios" class="padded">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h2>Oficinas Administrativas</h2>
+        </div>
+        <div class="col">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Lugar</th>
+                        <th>Contacto</th>
+                        <th>Telefono</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of listaEnvios">
+                        <td>{{item.idempresaenvio}}</td>
+                        <td>{{item.nombre}}</td>
+                        <td>{{item.telefono}}</td>
+                    </tr>
+                
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</section>

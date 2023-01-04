@@ -1,0 +1,196 @@
+<section class="padded">
+    <div class="container">
+      <h1> <i class="bi bi-basket-fill"></i>  Productos</h1>
+      <div class="mb-3">
+  
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1"><i class="bi bi-basket-fill"></i> </span>
+          <input type="text" class="form-control" [(ngModel)]="textoBuscar" placeholder="Búsqueda producto"> 
+          <button type="button" class="btn btn-primary" (click)="buscar()">Buscar Producto</button>                
+        </div>
+  
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insertModal">
+          <i class="bi bi-plus-square-fill"></i> Agregar Producto
+        </button>
+      </div>
+      <div class="col">                
+        <table class="table table-primary">
+          <thead>
+            <tr>
+              <th >Código</th>
+              <th >Producto </th>
+              <th (click)="setOrder('price')">Precio   <i class="bi bi-arrow-down-up"></i></th>
+              <th>Detalles</th>
+              <th>Editar</th>            
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of datos 
+            | orderBy: columnaOrden : reversa 
+            | paginate :{itemsPerPage:21,currentPage: pagina}" >
+              <td>{{item.id}}</td>
+              <td>{{item.title}}</td>
+              <td>s/{{item.price| number: '.2' }}</td>
+              <td>
+                <i class="bi bi-info-square-fill"(click)="editarCategoria(item)"
+                data-bs-toggle="modal" data-bs-target="#detalleModal"></i>
+              </td>
+              <td><i class="bi bi-pen-fill"
+                (click)="editarCategoria(item)" 
+                data-bs-toggle="modal" 
+                data-bs-target="#updateModal"></i></td>  
+            </tr>          
+                <tr *ngFor="let item of productoAgregado ">
+                <td >{{item.id}}</td>
+                <td >{{item.title}}</td>
+                <td >{{item.price}}</td>
+                <td>
+                  <i class="bi bi-info-square-fill"></i>
+                </td>
+                <td><i class="bi bi-pen-fill"
+                 ></i></td>              
+                </tr>            
+          </tbody>
+          
+        </table>
+        <div id="center">
+          <pagination-controls (pageChange)="pagina = $event" ></pagination-controls>  
+        </div>   
+  
+      </div>
+    </div>
+  </section>
+  
+  
+  <!-- Modal  INSERTAR PRODUCTO-->
+  <div class="modal fade" id="insertModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title fs-5" id="exampleModalLabel"><i class="bi bi-shop"></i> Agregar Producto</h2>
+        <button type="button" class="btn-close" id="btn-cerrar-insert" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+  
+  
+      <form  [formGroup]="productosInsertForm" ngNativeValidate
+       (ngSubmit)="productosInsert()">
+        <div class="modal-body">        
+          
+          <div class="mb-3">
+            <input type="text"
+             class="form-control" 
+             placeholder="Digite nombre del Producto"
+            id ="title"
+            [(ngModel)]="producto.title"
+            name="title"  
+            required minlength="1"           
+            formControlName="title"              
+            >
+          </div>
+  
+          <div class="mb-3">
+            <input type="text" 
+            class="form-control" 
+            placeholder="precio"
+            id ="price"
+            [(ngModel)]="producto.price"
+            name="price"
+            required minlength="1" 
+            step="any"   
+            formControlName="price">
+          </div>  
+          
+          <div class="mb-3">
+            <i class="bi bi-card-image"></i><input   type="file"
+            (change)="capturarFile($event)"             
+            class="form-control"
+            id ="image"
+            [(ngModel)]="producto.image"
+            name="image"
+            formControlName="image">
+          </div> 
+          <div class="mb-3" *ngIf="previsualizacion">
+          <img class="form-control" [src]="previsualizacion" alt="">
+          </div> 
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="submit" class="btn btn-primary" >Guardar</button>
+        </div>
+      </form>
+    </div>
+    </div>
+  </div>
+  
+  
+  
+  <!-- Modal  EDITAR-->
+  <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Producto</h1>
+        <button type="button" class="btn-close" id="btn-cerrar-update" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+     
+      <form  *ngIf="productoEditar" [formGroup]="productosUpdateForm"ngNativeValidate
+      (ngSubmit)="productosUpdate(productosUpdateForm.value)">
+        <div class="modal-body">
+          <div class="mb-3">
+            <input type="number" class="form-control" placeholder="id"
+            [(ngModel)]="productoEditar.id"
+            readonly =readonly            
+            formControlName="id" >
+          </div>
+  
+  
+          <div class="mb-3">
+            <input type="text" class="form-control" placeholder="title"
+            [(ngModel)]="productoEditar.title"
+            required minlength="5"
+            formControlName="title" >
+            
+            
+          </div>
+  
+          <div class="mb-3">
+            <input type="number" class="form-control" placeholder="price"
+            [(ngModel)]="productoEditar.price"
+            required minlength="1"
+            step="any"  
+            formControlName="price">
+          </div>
+      
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+    </div>
+  </div>
+  
+  
+  
+  <!-- Modal  DETALLES-->
+  <div class="modal fade" id="detalleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      <div class="modal-header">      
+        <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>   
+      <form  *ngIf="productoEditar" [formGroup]="productosUpdateForm"
+      (ngSubmit)="productosUpdate(productosUpdateForm.value)">
+        <div class="modal-body">   
+          <h1 class="modal-title fs-5" id="exampleModalLabel">{{productoEditar.title}}</h1>     
+          <div class="mb-3">
+          <img src="{{productoEditar.image}}" class="card-img-top"  alt="...">
+        </div>
+        </div>
+       </form>
+    </div>
+    </div>
+  </div>
+  

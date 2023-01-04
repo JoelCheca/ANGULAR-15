@@ -1,0 +1,61 @@
+
+body{
+    font-family: 'Roboto', sans-serif;
+}
+
+:root{
+    --color1: #000302;
+    --color2:#02152D;
+    --color3:#E30E0E;
+    --color4:#0EE3B3;
+    --color5:#731702;
+    --color6:#B7F909;
+    --color-blanco: #ffffff;
+    --color-negro: #003201;
+    --color-gris-claro: #cccccc;
+    --color-gris-oscuro: #000302;
+ 
+}
+
+h1{
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: -1px;
+}
+
+h2{
+    font-size: 36px;
+    font-weight: 200;
+    letter-spacing: -1px;
+    text-transform: lowercase;
+}
+
+h3{
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+#main-header{
+    background-color: var(--color2);
+    color: var(--color-blanco);
+}
+
+#main-header h1, #main-header p{
+    margin-bottom:  0;
+}
+
+#nosotros{
+    background-color: var(--color6);
+    color: var(--color-gris-oscuro);
+}
+#main-footer{
+    background-color: var(--color-gris-oscuro);
+    color: var(--color-gris-claro);
+    padding: 45px 0;
+}
+
+.padded{
+    padding-top: 90px;
+    padding-bottom: 90px;
+}

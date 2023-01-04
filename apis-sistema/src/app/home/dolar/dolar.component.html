@@ -1,0 +1,36 @@
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">           
+        <h1>  <i class="bi bi-cash-coin"></i>        TIPO DE CAMBIO     </h1>     
+        
+        <div class="col">
+            <br>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Compra</th>
+                        <th>Venta</th>
+                        <th>Información</th>
+                        <th>Moneda</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr >                        
+                        <td *ngFor="let item of listaDolar| ObjToArray">{{item}}</td>
+                                  
+                    </tr>
+                
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
+    <br>
+    <h1>  <i class="bi bi-cash-coin"></i>  CONSULTAS RUC     </h1> 
+</div>
+
+
+
+
